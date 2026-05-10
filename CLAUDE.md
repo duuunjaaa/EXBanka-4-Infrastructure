@@ -72,6 +72,8 @@ All other services (databases, Go microservices) communicate only over the inter
 | `securities-service` | 50060 | `securities-db` |
 | `order-service` | 50061 | `order-db` |
 | `portfolio-service` | 50062 | `portfolio-db` |
+| `otc-service` | 50063 | `otc-db` |
+| `fund-service` | 50064 | `fund-db` |
 
 ## Adding a new service
 Checklist when a new Go microservice is added to the backend:

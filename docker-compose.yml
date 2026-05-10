@@ -423,6 +423,7 @@ services:
       EMPLOYEE_SERVICE_ADDR: employee-service:50051
       EXCHANGE_SERVICE_ADDR: exchange-service:50057
       PORTFOLIO_SERVICE_ADDR: portfolio-service:50062
+      FUND_SERVICE_ADDR: fund-service:50064
     depends_on:
       order-db:
         condition: service_healthy
@@ -443,6 +444,8 @@ services:
       exchange-service:
         condition: service_started
       portfolio-service:
+        condition: service_started
+      fund-service:
         condition: service_started
     networks: [exbanka-net]
 
@@ -512,12 +515,21 @@ services:
       OTC_DB_URL: postgres://otc_user:otc_pass@otc-db:5432/otc_db?sslmode=disable
       EMPLOYEE_DB_URL: postgres://employee_user:employee_pass@employee-db:5432/employee_db?sslmode=disable
       CLIENT_DB_URL: postgres://client_user:client_pass@client-db:5432/client_db?sslmode=disable
+      ACCOUNT_DB_URL: postgres://account_user:account_pass@account-db:5432/account_db?sslmode=disable
+      PORTFOLIO_DB_URL: postgres://portfolio_user:portfolio_pass@portfolio-db:5432/portfolio_db?sslmode=disable
+      SECURITIES_DB_URL: postgres://securities_user:securities_pass@securities-db:5432/securities_db?sslmode=disable
     depends_on:
       otc-db:
         condition: service_healthy
       employee-db:
         condition: service_healthy
       client-db:
+        condition: service_healthy
+      account-db:
+        condition: service_healthy
+      portfolio-db:
+        condition: service_healthy
+      securities-db:
         condition: service_healthy
     networks: [exbanka-net]
 
