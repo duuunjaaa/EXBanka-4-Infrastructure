@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otc-service
+  namespace: exbanka-4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otc-service
+  template:
+    metadata:
+      labels:
+        app: otc-service
+    spec:
+      containers:
+        - name: otc-service
+          image: ghcr.io/raf-si-2025/exbanka-4-backend/otc-service:latest
+          imagePullPolicy: Always
+          env:
+            - name: OTC_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: exbanka-db-pguser-otc_user
+                  key: uri
+            - name: EMPLOYEE_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: exbanka-db-pguser-employee_user
+                  key: uri
+            - name: CLIENT_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: exbanka-db-pguser-client_user
+                  key: uri
+            - name: ACCOUNT_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: exbanka-db-pguser-account_user
+                  key: uri
+            - name: PORTFOLIO_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: exbanka-db-pguser-portfolio_user
+                  key: uri
+            - name: SECURITIES_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: exbanka-db-pguser-securities_user
+                  key: uri
+            - name: OWN_ROUTING_NUMBER
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: OWN_ROUTING_NUMBER
+            - name: PARTNER_ROUTING_NUMBER
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: PARTNER_ROUTING_NUMBER
+            - name: PARTNER_BANK_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: PARTNER_BANK_NAME
+            - name: PARTNER_BANK_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: PARTNER_BANK_URL
+            - name: PARTNER_API_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: PARTNER_API_KEY
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          readinessProbe:
+            tcpSocket:
+              port: 50063
+            initialDelaySeconds: 10
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otc-service
+  namespace: exbanka-4
+spec:
+  selector:
+    app: otc-service
+  ports:
+    - port: 50063
+      targetPort: 50063
