@@ -1,8 +1,8 @@
-services:
+﻿services:
 
-  # ────────────────────────────────────────────────────────────
+  # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   # Databases
-  # ────────────────────────────────────────────────────────────
+  # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   employee-db:
     image: postgres:16-alpine
@@ -132,9 +132,9 @@ services:
       retries: 10
     networks: [exbanka-net]
 
-  # ────────────────────────────────────────────────────────────
+  # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   # RabbitMQ
-  # ────────────────────────────────────────────────────────────
+  # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
@@ -149,14 +149,15 @@ services:
       - "15672:15672"
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
-      interval: 5s
-      timeout: 10s
-      retries: 15
+      interval: 10s
+      timeout: 30s
+      retries: 10
+      start_period: 60s
     networks: [exbanka-net]
 
-  # ────────────────────────────────────────────────────────────
+  # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   # Redis
-  # ────────────────────────────────────────────────────────────
+  # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   redis:
     image: redis:7-alpine
@@ -171,9 +172,9 @@ services:
       retries: 10
     networks: [exbanka-net]
 
-  # ────────────────────────────────────────────────────────────
+  # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   # Go services
-  # ────────────────────────────────────────────────────────────
+  # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   employee-service:
     build:
@@ -266,6 +267,8 @@ services:
       ACCOUNT_DB_URL: postgres://account_user:account_pass@account-db:5432/account_db?sslmode=disable
       EXCHANGE_DB_URL: postgres://exchange_user:exchange_pass@exchange-db:5432/exchange_db?sslmode=disable
       CLIENT_DB_URL: postgres://client_user:client_pass@client-db:5432/client_db?sslmode=disable
+      AUTH_SERVICE_ADDR: auth-service:50052
+      EMAIL_SERVICE_ADDR: email-service:50053
       OWN_ROUTING_NUMBER: "888"
       PARTNER_ROUTING_NUMBER: "444"
       PARTNER_BANK_NAME: "Banka 4"
@@ -280,6 +283,10 @@ services:
         condition: service_healthy
       client-db:
         condition: service_healthy
+      auth-service:
+        condition: service_started
+      email-service:
+        condition: service_started
     networks: [exbanka-net]
 
   exchange-service:
@@ -309,6 +316,7 @@ services:
       EXCHANGE_DB_URL: postgres://exchange_user:exchange_pass@exchange-db:5432/exchange_db?sslmode=disable
       EMAIL_SERVICE_ADDR: email-service:50053
       CLIENT_SERVICE_ADDR: client-service:50056
+      AUTH_SERVICE_ADDR: auth-service:50052
     depends_on:
       loan-db:
         condition: service_healthy
@@ -320,6 +328,8 @@ services:
         condition: service_started
       client-service:
         condition: service_started
+      auth-service:
+        condition: service_started
     networks: [exbanka-net]
 
   card-service:
@@ -329,11 +339,20 @@ services:
     environment:
       CARD_DB_URL: postgres://card_user:card_pass@card-db:5432/card_db?sslmode=disable
       ACCOUNT_DB_URL: postgres://account_user:account_pass@account-db:5432/account_db?sslmode=disable
+      AUTH_SERVICE_ADDR: auth-service:50052
+      EMAIL_SERVICE_ADDR: email-service:50053
+      CLIENT_SERVICE_ADDR: client-service:50056
     depends_on:
       card-db:
         condition: service_healthy
       account-db:
         condition: service_healthy
+      auth-service:
+        condition: service_started
+      email-service:
+        condition: service_started
+      client-service:
+        condition: service_started
     networks: [exbanka-net]
 
   api-gateway:
@@ -630,9 +649,9 @@ services:
         condition: service_started
     networks: [exbanka-net]
 
-  # ────────────────────────────────────────────────────────────
+  # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   # Frontend
-  # ────────────────────────────────────────────────────────────
+  # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   frontend:
     build:
@@ -647,9 +666,9 @@ services:
         condition: service_started
     networks: [exbanka-net]
 
-# ────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # Networks & Volumes
-# ────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 networks:
   exbanka-net:
