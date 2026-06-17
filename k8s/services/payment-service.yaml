@@ -63,6 +63,11 @@ spec:
                 secretKeyRef:
                   name: app-secrets
                   key: PARTNER_API_KEY
+            - name: AUTH_SERVICE_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: AUTH_SERVICE_ADDR
           resources:
             requests:
               cpu: "50m"
