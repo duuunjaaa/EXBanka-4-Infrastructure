@@ -53,6 +53,11 @@ spec:
                 secretKeyRef:
                   name: exbanka-db-pguser-exchange-user
                   key: uri
+            - name: AUTH_SERVICE_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  name: service-config
+                  key: AUTH_SERVICE_ADDR
             - name: OWN_ROUTING_NUMBER
               valueFrom:
                 configMapKeyRef:
